@@ -47,7 +47,7 @@ module.exports.index = async (req, res) => {
   res.json(task);
 };
 
-//[GET] /aip/v1/tasks/detail/:id
+//[GET] /api/v1/tasks/detail/:id
 module.exports.taskDetail = async (req, res) => {
 
   try {
@@ -60,5 +60,31 @@ module.exports.taskDetail = async (req, res) => {
     res.json(task)
   } catch (error) {
     res.json("không tìm thấy");
+  }
+};
+
+
+//[PATCH]/api/v1/tasks/change-status/:id
+module.exports.changeStatus = async (req, res) => {
+
+  try {
+    const id = req.params.id;
+    const status = req.body.status;
+
+    await Task.updateOne({
+      _id: id
+    }, {
+      status: status
+    })
+
+    res.json({
+      code: 200,
+      message: "Cập nhật trạng thái thành công!"
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Không tồn tại!"
+    });
   }
 };
