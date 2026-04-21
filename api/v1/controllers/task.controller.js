@@ -5,12 +5,20 @@ const Task = require("../models/task.model");
 module.exports.index = async (req, res) => {
   const find = {
     deleted: false
-  }
+  };
+  
+  //lọc trạng thái
   if(req.query.status) {
     find.status = req.query.status;
-  }
+  };
   
-  const task = await Task.find(find);
+  //sort
+  const sort = {};
+  if(req.query.sortKey && req.query.sortValue) {
+    sort[req.query.sortKey] = req.query.sortValue;
+  };
+
+  const task = await Task.find(find).sort(sort);
 
   res.json(task)
 };
