@@ -144,3 +144,22 @@ module.exports.createPost = async (req, res) => {
     });
   }
 };
+
+//[PATCH]/api/v1/tasks/edit/:id
+module.exports.editPatch = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await Task.updateOne({
+      _id:id
+    }, req.body);
+
+    res.json({
+      code: 200,
+      message: "Cập nhật trạng thái thành công!",});
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Không tồn tại!"
+    });
+  }
+};
