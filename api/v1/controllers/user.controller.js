@@ -80,7 +80,6 @@ module.exports.login = async (req, res) => {
   });
 };
 
-
 //[POST] /api/v1/users/password/forgot
 module.exports.forgot = async (req, res) => {
   const email = req.body.email;
@@ -181,10 +180,36 @@ module.exports.resetPassword = async (req, res) => {
     {
       password: md5(password)
     })
-    
+
   res.json({
     code: 200,
     message: "Đổi mật khẩu thành công!",
   })
+
+};
+
+//[GET] /api/v1/users/detail
+module.exports.detail = async (req, res) => {
+  const token = req.cookies.token;
+
+  try {
+    const user = await User.findOne({
+      token: token,
+      deleted: false
+    }).select("-password -token");
+    res.json({
+      code: 200,
+      message: "Success!",
+      info: user
+    });
+    
+  } catch (error) {
+
+    res.json({
+      code: 400,
+      message: "Error!",
+    });
+
+  }
 
 };
