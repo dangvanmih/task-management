@@ -4,6 +4,11 @@ const searchHelper = require("../../../helper/search")
 //[GET] /api/v1/tasks
 module.exports.index = async (req, res) => {
   const find = {
+    // tồn tại 1 trong 2 điều kiện
+    $or: [
+      {createdBy: req.user.id},
+      {listUser: req.user.id},
+    ],
     deleted: false
   };
 
@@ -112,7 +117,7 @@ module.exports.changeMulti = async (req, res) => {
       case "delete":
         await Task.updateMany(
           {
-            _id:{$in: ids}
+            _id: { $in: ids }
           },
           {
             deleted: true,
@@ -165,12 +170,13 @@ module.exports.editPatch = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await Task.updateOne({
-      _id:id
+      _id: id
     }, req.body);
 
     res.json({
       code: 200,
-      message: "Cập nhật thành công!",});
+      message: "Cập nhật thành công!",
+    });
   } catch (error) {
     res.json({
       code: 400,
@@ -184,7 +190,7 @@ module.exports.delete = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await Task.updateOne({
-      _id:id
+      _id: id
     }, {
       deleted: true,
       deletedAt: new Date()
@@ -192,7 +198,8 @@ module.exports.delete = async (req, res) => {
 
     res.json({
       code: 200,
-      message: "Xóa thành công!",});
+      message: "Xóa thành công!",
+    });
   } catch (error) {
     res.json({
       code: 400,
