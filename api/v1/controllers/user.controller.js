@@ -208,3 +208,27 @@ module.exports.detail = async (req, res) => {
   }
 
 };
+
+//[GET] /api/v1/users/list
+module.exports.listUser = async (req, res) => {
+  try {
+    const user = await User.find({
+      deleted: false
+    }).select("fullName email");
+
+    res.json({
+      code: 200,
+      message: "Success!",
+      listUser: user
+    });
+    
+  } catch (error) {
+
+    res.json({
+      code: 400,
+      message: "Error!",
+    });
+
+  }
+
+};

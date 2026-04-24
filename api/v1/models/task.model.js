@@ -4,6 +4,7 @@ const taskSchema = new mongoose.Schema(
   {
     title: String,
     createdBy:String,
+    listUser: Array,
     status: String,
     content: String,
     timeStart: Date,
